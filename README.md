@@ -28,6 +28,7 @@ This project is a web-based file manager in PHP with authentication, ZIP extract
 1. Place all files in the desired folder on your PHP server.
 2. Edit the username and password hash in `config.php`:
    ```php
+   $sessionName = 'file_manager_frontoffice';
    $USERNAME = 'admin';
    $PASSWORD_HASH = '...'; // Argon2 hash
    ```

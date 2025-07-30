@@ -1,17 +1,27 @@
 <?php
-$sessionName = 'file_manager_' . md5(__DIR__);
+$sessionName = '';
 session_name($sessionName);
 session_start();
 
-$USERNAME = 'admin@example.com'; 
-$PASSWORD_HASH = '$argon2i$v=19$m=16,t=2,p=1$RVhBTVBMRVNBTFRUV08wMg$RVhBTVBMRURJR0VTVDAwMg';
+$USERNAME = ''; 
+$PASSWORD_HASH = '';
 
 function verifyPassword($password, $hash) {
     return password_verify($password, $hash);
 }
 
 function isLoggedIn() {
-    return isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
+    global $USERNAME, $PASSWORD_HASH;
+    if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
+        return false;
+    }
+    if (!isset($_SESSION['username']) || $_SESSION['username'] !== $USERNAME) {
+        return false;
+    }
+    if (!isset($_SESSION['password_hash']) || $_SESSION['password_hash'] !== $PASSWORD_HASH) {
+        return false;
+    }
+    return true;
 }
 
 function showLoginPage() {
@@ -208,7 +218,8 @@ if (isset($_POST['login'])) {
     if ($username === $USERNAME && verifyPassword($password, $PASSWORD_HASH)) {
         $_SESSION['logged_in'] = true;
         $_SESSION['login_time'] = time();
-        $_SESSION['username'] = $username;
+        $_SESSION['username'] = $USERNAME;
+        $_SESSION['password_hash'] = $PASSWORD_HASH;
         header('Location: ' . $_SERVER['PHP_SELF']);
         exit;
     } else {
