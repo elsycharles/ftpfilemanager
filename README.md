@@ -52,6 +52,14 @@ This project is a web-based file manager in PHP with authentication, ZIP extract
 - Modify the CSS design directly in `config.php`.
 - Adapt features as needed (add restrictions, logs, etc).
 
+## Obfuscation
+
+To obfuscate the main PHP file, you can use [yakpro-po](https://github.com/pk-fr/yakpro-po):
+
+```bash
+yakpro-po config.php --no-obfuscate-string-literal -o obfuscated_config.php
+```
+
 ## Warning
 
 > This script is intended for use on private servers or in controlled environments. Do not use in production without a security audit.
