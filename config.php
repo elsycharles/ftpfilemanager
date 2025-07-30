@@ -1,9 +1,10 @@
 <?php
+$sessionName = 'file_manager_' . md5(__DIR__);
+session_name($sessionName);
 session_start();
 
-
-$USERNAME = 'admin'; 
-$PASSWORD_HASH = '$argon2i$v=19$m=16,t=2,p=1$RVhBTVBMRVNBTFRPTkUwMQ$RVhBTVBMRURJR0VTVDAwMQ';
+$USERNAME = 'admin@example.com'; 
+$PASSWORD_HASH = '$argon2i$v=19$m=16,t=2,p=1$RVhBTVBMRVNBTFRUV08wMg$RVhBTVBMRURJR0VTVDAwMg';
 
 function verifyPassword($password, $hash) {
     return password_verify($password, $hash);
@@ -11,34 +12,6 @@ function verifyPassword($password, $hash) {
 
 function isLoggedIn() {
     return isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
-}
-
-function redirectToLogin() {
-    if (!isLoggedIn()) {
-        showLoginPage();
-        exit;
-    }
-}
-
-if (isset($_POST['login'])) {
-    $username = $_POST['username'] ?? '';
-    $password = $_POST['password'] ?? '';
-    
-    if ($username === $USERNAME && verifyPassword($password, $PASSWORD_HASH)) {
-        $_SESSION['logged_in'] = true;
-        $_SESSION['login_time'] = time();
-        $_SESSION['username'] = $username;
-        header('Location: ' . $_SERVER['PHP_SELF']);
-        exit;
-    } else {
-            $login_error = 'Incorrect username or password.';
-    }
-}
-
-if (isset($_GET['logout'])) {
-    session_destroy();
-    header('Location: ' . $_SERVER['PHP_SELF']);
-    exit;
 }
 
 function showLoginPage() {
@@ -225,11 +198,34 @@ function showLoginPage() {
     </body>
     </html>
     <?php
+    exit;
 }
 
-redirectToLogin();
+if (isset($_POST['login'])) {
+    $username = $_POST['username'] ?? '';
+    $password = $_POST['password'] ?? '';
+    
+    if ($username === $USERNAME && verifyPassword($password, $PASSWORD_HASH)) {
+        $_SESSION['logged_in'] = true;
+        $_SESSION['login_time'] = time();
+        $_SESSION['username'] = $username;
+        header('Location: ' . $_SERVER['PHP_SELF']);
+        exit;
+    } else {
+        $login_error = 'Incorrect username or password.';
+        showLoginPage();
+    }
+}
 
-$result = '';
+if (isset($_GET['logout'])) {
+    session_destroy();
+    header('Location: ' . $_SERVER['PHP_SELF']);
+    exit;
+}
+
+if (!isLoggedIn()) {
+    showLoginPage();
+}
 
 function extractZip($zipFile, $destination) {
     $zip = new ZipArchive;
