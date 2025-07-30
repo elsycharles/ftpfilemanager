@@ -1,10 +1,11 @@
 <?php
-$sessionName = '';
-session_name($sessionName);
-session_start();
 
+$sessionName = '';
 $USERNAME = ''; 
 $PASSWORD_HASH = '';
+
+session_name($sessionName);
+session_start();
 
 function verifyPassword($password, $hash) {
     return password_verify($password, $hash);
