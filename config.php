@@ -45,7 +45,7 @@ function showLoginPage() {
     global $login_error;
     ?>
     <!DOCTYPE html>
-    <html lang="fr">
+    <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -373,12 +373,12 @@ if (isset($_POST['extract'])) {
     if (isset($_FILES['zipFile']) && $_FILES['zipFile']['error'] == UPLOAD_ERR_OK) {
         $zipTmp = $_FILES['zipFile']['tmp_name'];
         if (extractZip($zipTmp, $currentDir)) {
-            $result = '✓ Extraction réussie !';
+            $result = '✓ Successful extraction!';
         } else {
-            $result = "✗ Erreur lors de l'extraction du ZIP.";
+            $result = "✗ Error extracting ZIP.";
         }
     } else {
-        $result = '! Veuillez sélectionner un fichier ZIP.';
+        $result = '! Please select a ZIP file.';
     }
 }
 
@@ -387,9 +387,9 @@ if (isset($_POST['delete']) && isset($_POST['items'])) {
     $deleteResults = deleteItems($items);
     $success = array_filter($deleteResults);
     $fail = array_keys(array_filter($deleteResults, function($v){return !$v;}));
-    $result = '✓ ' . count($success) . ' élément(s) supprimé(s).';
+    $result = '✓ ' . count($success) . ' item(s) deleted.';
     if ($fail) {
-        $result .= ' ✗ Erreur : ' . count($fail) . ' élément(s) non supprimé(s).';
+        $result .= ' ✗ Error: ' . count($fail) . ' item(s) not deleted.';
     }
 }
 
@@ -399,9 +399,9 @@ if (isset($_POST['move']) && isset($_POST['items']) && isset($_POST['destination
     $moveResults = moveItems($items, $destination);
     $success = array_filter($moveResults);
     $fail = array_keys(array_filter($moveResults, function($v){return !$v;}));
-    $result = '✓ ' . count($success) . ' élément(s) déplacé(s).';
+    $result = '✓ ' . count($success) . ' item(s) moved.';
     if ($fail) {
-        $result .= ' ✗ Erreur : ' . count($fail) . ' élément(s) non déplacé(s).';
+        $result .= ' ✗ Error: ' . count($fail) . ' item(s) not moved.';
     }
 }
 
@@ -411,9 +411,9 @@ if (isset($_POST['copy']) && isset($_POST['items']) && isset($_POST['destination
     $copyResults = copyItems($items, $destination);
     $success = array_filter($copyResults);
     $fail = array_keys(array_filter($copyResults, function($v){return !$v;}));
-    $result = '✓ ' . count($success) . ' élément(s) copié(s).';
+    $result = '✓ ' . count($success) . ' item(s) copied.';
     if ($fail) {
-        $result .= ' ✗ Erreur : ' . count($fail) . ' élément(s) non copié(s).';
+        $result .= ' ✗ Error: ' . count($fail) . ' item(s) not copied.';
     }
 }
 
@@ -422,11 +422,11 @@ $currentRelativePath = getRelativePath($currentDir, $baseDir);
 
 ?>
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestionnaire de fichiers</title>
+    <title>File Manager</title>
     <style>
         * {
             margin: 0;
